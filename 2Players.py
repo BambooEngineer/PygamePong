@@ -62,6 +62,20 @@ def game_intro(): # load image while connecting controllers
         pygame.display.update()
         time.sleep(1)
         intro = False
+def game_over(): # load image while connecting controllers
+    x = 300
+    y = 250
+    intro = True
+    while intro:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        gameDisplay.fill(white)
+        gameDisplay.blit(image9, (x,y))
+        pygame.display.update()
+        time.sleep(1)
+        intro = False
     
 def things(thingx, thingy, radiusw, color):
     pygame.draw.circle(gameDisplay,color,[thingx,thingy],(radiusw))
@@ -150,33 +164,41 @@ while not crashed:
 
     if(ballx > 800): # inside screen
         ball_changex = -5
-        game_intro()
+        game_over()
         time.sleep(1)
     if(ballx < 10):
         ball_changex = 5
-        game_intro()
+        game_over()
         time.sleep(1)
     if(bally > 590):
         ball_changey = -5
     if(bally < 10):
         ball_changey = 5
         
- # collision is really complicated for no reason in pygame
+
     
     #left right = y 200 lengths
      #down up = x 200 lengths 500 10
 
     areaL = math.hypot(10 - ballx,200+left-bally) # MATH for collision
-    #if(25 > ballx and (bally < left-200 or bally <= left)):
-    if(areaL <= 50):
-        ball_changex = 5
-        ball_changey = random.randint(-5,5)
+    areal = math.hypot(10 - ballx,100+left-bally) # CIRCLES
+    # 2 collision masks since they are not that good
+    if(areaL <= 50): 
+        ball_changex = random.randint(5,10)
+        ball_changey = random.randint(-10,5)
+    if(areal <= 50):
+        ball_changex = random.randint(5,10)
+        ball_changey = random.randint(-10,5)
 
-    areaR = math.hypot(690 - ballx,200+right-bally) # MATH for collision
-    #if(25 > ballx and (bally < left-200 or bally <= left)):
+    areaR = math.hypot(690 - ballx,200+right-bally) 
+    arear = math.hypot(690 - ballx,100+right-bally)
+    
     if(areaR <= 50):
-        ball_changex = -5
-        ball_changey = random.randint(-5,5)
+        ball_changex = random.randint(-10,-5)
+        ball_changey = random.randint(-10,5)
+    if(arear <= 50):
+        ball_changex = random.randint(-10,-5)
+        ball_changey = random.randint(-10,5)
 
 
     
@@ -184,3 +206,4 @@ while not crashed:
     clock.tick(60)
 pygame.quit()
 quit()
+
